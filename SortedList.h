@@ -7,6 +7,14 @@ namespace mtm {
 
     template <typename T>
     class SortedList {
+    private:
+        struct Node{
+            T value;
+            Node* next;
+            Node(const T& value): value(value), next(nullptr){}
+        };
+
+        Node* head;
     public:
         /**
          *
