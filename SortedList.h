@@ -6,15 +6,23 @@
 namespace mtm {
 
     template <typename T>
+    class Node{
+    public:
+        T value;
+        Node* next;
+        Node(const T& value): value(value), next(nullptr){}
+    };
+
+    template <typename T>
     class SortedList {
     private:
-        struct Node{
-            T value;
-            Node* next;
-            Node(const T& value): value(value), next(nullptr){}
-        };
+//        struct Node{
+//            T value;
+//            Node* next;
+//            Node(const T& value): value(value), next(nullptr){}
+//        };
 
-        Node* head;
+        Node<T>* head;
         int size;
     public:
         ////    constructor
@@ -98,7 +106,7 @@ namespace mtm {
             if(this->index > this->list->size){
                 throw std::out_of_range("Out of range");
             }
-            SortedList<T>::Node* runner = this->list->head;
+            Node<T>* runner = this->list->head;
             int i = 1;
             while(i < this->index){
                 runner = runner->next;
