@@ -64,12 +64,17 @@ namespace mtm {
                     ////    reaches this code if one of the allocations failed
                     ////    so we need to delete everything we already copied so far
                     ////    as we did before delete the current list with this loop
+                    ////    assign a new pointer to_delete which points to the current node we are going to delete
                     Node<T>* to_delete = this->head;
-                    Node<T>* tmp = this->head;
-                    while(tmp)
+                    ////    iterate over the current sorted_list with runner
+                    Node<T>* runner = this->head;
+                    while(runner)
                     {
-                        to_delete = tmp;
-                        tmp = tmp->next;
+                        ////    place the to_delete to point to the current node
+                        to_delete = runner;
+                        ////    move the runner to the next node
+                        runner = runner->next;
+                        ////    delete the current node
                         delete to_delete;
                     }
                     size = 0;
@@ -83,11 +88,16 @@ namespace mtm {
 
         ////    destructor
         ~SortedList(){
+            ////    assign a new pointer to_delete which points to the current node we are going to delete
             Node<T>* to_delete = this->head;
+            ////    iterate over the current sorted_list with runner
             Node<T>* runner = this->head;
             while (runner){
+                ////    place the to_delete to point to the current node
                 to_delete = runner;
+                ////    move the runner to the next node
                 runner = runner->next;
+                ////    delete the current node
                 delete to_delete;
             }
         }
