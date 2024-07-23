@@ -33,10 +33,14 @@ namespace mtm {
         class ConstIterator;
 
         ////    begin method
-        ConstIterator begin();
+        ConstIterator begin(){
+            return ConstIterator(1, this);
+        }
 
         ////    end method
-        ConstIterator end();
+        ConstIterator end(){
+            return ConstIterator(this->size + 1, this);
+        }
 
         ////////    methods for sorted_list
         void insert(const T& to_add);
@@ -115,15 +119,16 @@ namespace mtm {
             return *this;
         }
 
-        const ConstIterator operator++(int i){
-            if(this->index > this->list->size)
-            {
-                throw std::out_of_range("Out of range");
-            }
-            const ConstIterator result = *this;
-            ++(*this);
-            return result;
-        }
+        ////    not needed
+//        const ConstIterator operator++(int i){
+//            if(this->index > this->list->size)
+//            {
+//                throw std::out_of_range("Out of range");
+//            }
+//            const ConstIterator result = *this;
+//            ++(*this);
+//            return result;
+//        }
 
     /**
      * the class should support the following public interface:
