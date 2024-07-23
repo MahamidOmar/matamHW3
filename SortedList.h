@@ -11,6 +11,7 @@ namespace mtm {
         T value;
         Node* next;
         Node(const T& value): value(value), next(nullptr){}
+        ~Node() = default;
     };
 
     template <typename T>
@@ -35,7 +36,15 @@ namespace mtm {
         SortedList& operator=(const SortedList& to_copy);
 
         ////    destructor
-        ~SortedList();
+        ~SortedList(){
+            Node<T>* to_delete = this->head;
+            Node<T>* runner = this->head;
+            while (runner){
+                to_delete = runner;
+                runner = runner->next;
+                delete to_delete;
+            }
+        }
 
         ////    constIterator
         class ConstIterator;
