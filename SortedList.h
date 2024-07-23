@@ -199,10 +199,34 @@ namespace mtm {
 
         ////////    methods for sorted_list
         void insert(const T& to_add){
+            Node<T>* new_node;
             try{
-                Node<T>* new_node = new Node<T>(to_add);
-            }catch (...){
-
+                ////    try to allocate a new node that will include the new value to_add
+                new_node = new Node<T>(to_add);
+            }catch (const std::bad_alloc& e){
+                throw e;
+            }
+            ////    check if the current sorted_list is empty
+            if(this->size == 0){
+                ////    assign the head and tail to the new_node
+                this->head = new_node;
+                this->tail = new_node;
+                ////    increase the sorted_list size
+                ++this->size;
+            }else{
+                ////    if the current sorted_list has at least one element
+                ////    assign current_node to point to the current node
+                Node<T>* current_node = this->head;
+                ////    at the end of this loop, current_node will point to the last node that has a value > to_add
+                ////    this means that new_node will be current_node->next
+                while(current_node->next && current_node->next->value > to_add){
+                    current_node = current_node->next;
+                }
+                ////    now just need to insert new_node right after current_node
+                ////    assign the new_node->next to be the next of current node
+                new_node->next = current_node->next;
+                ////    and finally assign the current_node->next to be new_node
+                current_node->next = new_node;
             }
         }
 
