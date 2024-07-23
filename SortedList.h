@@ -84,7 +84,87 @@ namespace mtm {
         }
 
         ////    operator=
-        SortedList& operator=(const SortedList& to_copy);
+        SortedList& operator=(const SortedList& to_copy){
+            ////    check if assigning this to this, nothing to do
+            if(this == &to_copy){
+                return *this;
+            }
+            ////    check if assigning to an empty sorted_list
+            ////    need to delete all the nodes in the current sorted_list
+            if(to_copy.size == 0){
+                ////    call the destructor for this so we can delete all the nodes
+                this->~SortedList();
+                ////    return all the fields to their initial values
+                this->size = 0;
+                this->head = nullptr;
+                this->tail = nullptr;
+                return *this;
+            }
+            ////    copyNodes points to the current node from to_copy sorted_list that we are going to copy
+            Node<T>* copyNodes = to_copy.head;
+            Node<T>* newHead = nullptr;
+            try{
+                ////    try to copy the first node so we can continue with the rest
+                newHead = new Node<T>(copyNodes->value);
+            }catch (const std::bad_alloc& e){
+                ////    if the allocation failed
+                throw e;
+            }
+            ////    If reached here the first node is allocated and copied successfully
+            ////    assign a new pointer to the new tail
+            ////    At this stage only one is created, so the new tail is the same as the new head
+            Node<T>* newTail = newHead;
+            ////    move the copyNodes to the second node(if exists) so we can continue the copying
+            copyNodes = copyNodes->next;
+            while (copyNodes)
+            {
+                try {
+                    ////    create a new node and assign it to the next of the new_tail
+                    newTail->next = new Node<T>(copyNodes->value);
+                    ////    move the new_tail to the newly allocated node
+                    newTail = newTail->next;
+                    ////    move the copyNodes to the next node to_copy
+                    copyNodes = copyNodes->next;
+                }
+                catch (const std::bad_alloc& e)
+                {
+                    ////    reaches this code if one of the allocations failed
+                    ////    so we need to delete everything we already copied so far
+                    ////    as we did before delete the current list with this loop
+                    ////    assign a new pointer to_delete which points to the current node we are going to delete
+
+                    while(newHead)
+                    {
+                        ////    place the to_delete to point to the current node
+                        Node<T>* to_delete = newHead;
+                        ////    move the newHead to the next node
+                        newHead = newHead->next;
+                        ////    delete the current node
+                        delete to_delete;
+                    }
+                    this->size = 0;
+                    throw e;
+                }
+            }
+            ////    if reached this code this means that all the new allocations finished successfully
+            ////    now we need to delete all of the old nodes
+            while (this->head)
+            {
+                ////    place the to_delete to point to the current node
+                Node<T>* toDelete = this->head;
+                ////    move this->head to the next node
+                this->head = this->head->next;
+                ////    delete the current node
+                delete toDelete;
+            }
+            ////    update the size field
+            this->size = to_copy.size;
+            ////    assign the current head to point to the newly created list
+            this->head = newHead;
+            ////    assign the tail to the newly created tail
+            this->tail = newTail;
+            return *this;
+        }
 
         ////    destructor
         ~SortedList(){
