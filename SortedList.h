@@ -15,7 +15,42 @@ namespace mtm {
         };
 
         Node* head;
+        int size;
     public:
+        ////    constructor
+        SortedList(): head(nullptr), size(0){}
+
+        ////    copy constructor
+        SortedList(const SortedList& to_copy);
+
+        ////    operator=
+        SortedList& operator=(const SortedList& to_copy);
+
+        ////    destructor
+        ~SortedList();
+
+        ////    constIterator
+        class ConstIterator;
+
+        ////    begin method
+        ConstIterator begin();
+
+        ////    end method
+        ConstIterator end();
+
+        ////////    methods for sorted_list
+        void insert(const T& to_add);
+
+        void remove(ConstIterator& to_delete);
+
+        int length(){
+            return this->size;
+        }
+
+        SortedList filter(bool (*predicate)(const T&))const;
+
+        SortedList apply(T (*operation) (const T&))const;
+
         /**
          *
          * the class should support the following public interface:
@@ -44,6 +79,43 @@ namespace mtm {
 
     template <class T>
     class SortedList<T>::ConstIterator {
+    private:
+        int index;
+        const SortedList<T>* list;
+        friend class SortedList<T>;
+        ConstIterator(int index, const SortedList<T>* list): index(index), list(list){}
+
+    public:
+        ~ConstIterator() = default;
+        ConstIterator(const ConstIterator& iterator) = default;
+        ConstIterator& operator=(const ConstIterator& iterator) = default;
+
+        const T& operator*()const{
+            return list->head->value;
+        }
+
+        bool operator!=(const SortedList<T>::ConstIterator& iterator)const{
+            return (this->index != iterator.index) || (this->list != iterator.list);
+        }
+
+        const ConstIterator& operator++(){
+            if(this->index > this->list->size){
+                throw std::out_of_range("Out of range");
+            }
+            ++this->index;
+            return *this;
+        }
+
+        const ConstIterator operator++(int i){
+            if(this->index > this->list->size)
+            {
+                throw std::out_of_range("Out of range");
+            }
+            const ConstIterator result = *this;
+            ++(*this);
+            return result;
+        }
+
     /**
      * the class should support the following public interface:
      * if needed, use =defualt / =delete
