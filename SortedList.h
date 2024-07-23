@@ -180,6 +180,7 @@ namespace mtm {
             }
         }
 
+        ////    iterator:
         ////    constIterator
         class ConstIterator;
 
@@ -230,7 +231,49 @@ namespace mtm {
             }
         }
 
-        void remove(ConstIterator& to_delete);
+        void remove(const ConstIterator& to_delete){
+            ////    check if no elements in the current sorted_list,
+            ////    or if the iterator provided points to end(),
+            ////    or if to_delete doesn't point to a node in the current list
+            ////    nothing to remove in these cases
+            if(this->size == 0 || !(to_delete != this->end()) || (to_delete.list != this)){
+                return;
+            }
+            ////    check if to_delete points to the head of the sorted_list
+            if(to_delete == this->begin()){
+                ////    if only one node, then the tail should point to nullptr
+                if(this->size == 1){
+                    this->tail = nullptr;
+                }
+                ////    assign a pointer to the head so we can delete it
+                Node<T>* node_to_delete = this->head;
+                ////    move head to point to the next (if exists) or to nullptr (otherwise)
+                this->head = this->head->next;
+                ////    delete the head
+                delete node_to_delete;
+                ////    decrease the size of the sorted_list
+                --this->size;
+                return;
+            }
+            ////    assign a pointer to the current node
+            Node<T>* current_node = this->head;
+            ////    at the end of the loop current node will be the previous of the node we want to delete
+            while(current_node->next && current_node->next != to_delete.current){
+                current_node = current_node->next;
+            }
+            ////    reaches here if the loop didn't find a matching node for to_delete iterator
+            if(!(current_node->next)){
+                return;
+            }
+            ////    assign a pointer to the node we want to delete
+            Node<T>* node_to_delete = current_node->next;
+            ////    move the next of the current_node 2 nodes ahead, or to nullptr if we are deleting the last node
+            current_node->next = current_node->next->next;
+            ////    deallocate the required node
+            delete node_to_delete;
+            ////    decrease the size of the sorted_list
+            --this->size;
+        }
 
         int length(){
             ////    return the size of the sorted_list from the size field
@@ -322,6 +365,19 @@ namespace mtm {
             return *this;
         }
 
+        ////    will use this function only when we know that the iterator points to a legal node
+        ////    returns the node that the iterator points to.
+        Node<T>* current()const{
+            int i = 1;
+            Node<T>* runner = this->list->head;
+            ////    iterate over te sorted_list till we reach the correct index
+            while(runner && i < this->index){
+                runner = runner->next;
+                ++i;
+            }
+            ////    here i = index, and runner points to the requested node
+            return runner;
+        }
         ////    not needed
 //        const ConstIterator operator++(int i){
 //            if(this->index > this->list->size)
