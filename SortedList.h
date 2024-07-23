@@ -168,13 +168,11 @@ namespace mtm {
 
         ////    destructor
         ~SortedList(){
-            ////    assign a new pointer to_delete which points to the current node we are going to delete
-            Node<T>* to_delete = this->head;
             ////    iterate over the current sorted_list with runner
             Node<T>* runner = this->head;
             while (runner){
-                ////    place the to_delete to point to the current node
-                to_delete = runner;
+                ////    assign to_delete to point to the current node
+                Node<T>* to_delete = runner;
                 ////    move the runner to the next node
                 runner = runner->next;
                 ////    delete the current node
@@ -200,7 +198,13 @@ namespace mtm {
         }
 
         ////////    methods for sorted_list
-        void insert(const T& to_add);
+        void insert(const T& to_add){
+            try{
+                Node<T>* new_node = new Node<T>(to_add);
+            }catch (...){
+
+            }
+        }
 
         void remove(ConstIterator& to_delete);
 
