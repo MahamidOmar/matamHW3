@@ -162,9 +162,16 @@ namespace mtm {
     template <class T>
     class SortedList<T>::ConstIterator {
     private:
+        ////    index makes it easier to compare with operator!=
+        ////    also helps with iterating in operator* and searching for the correct node
         int index;
+        ////    pointer to the current list the iterator is assigned to
         const SortedList<T>* list;
+        ////    make the SortedList class a friend, so it can access ConstIterator fields and it's private constructor
         friend class SortedList<T>;
+        ////    constructor for building the iterator
+        ////    it is private so that no outside users can create iterators with it
+        ////    only the SortedList class can use it :)
         ConstIterator(int index, const SortedList<T>* list): index(index), list(list){}
 
     public:
@@ -173,26 +180,36 @@ namespace mtm {
         ConstIterator& operator=(const ConstIterator& iterator) = default;
 
         const T& operator*()const{
+            ////    check if the current index is out of range, can't return any value
             if(this->index > this->list->size){
                 throw std::out_of_range("Out of range");
             }
+            ////    assign runner to iterate over the list, so we can search for the correct node required for operator*
             Node<T>* runner = this->list->head;
+            ////    i increases till we reach the current index
             int i = 1;
+            ////    The loop keeps moving till the runner points to the current required node
             while(i < this->index){
                 runner = runner->next;
                 ++i;
             }
+            ////    when we reach this line, it means that i = index, so we can return the node->value
             return runner->value;
         }
 
         bool operator!=(const SortedList<T>::ConstIterator& iterator)const{
+            ////    if the index is not correct, or the iterators point to 2 different sorted_list
+            ////    return true
             return (this->index != iterator.index) || (this->list != iterator.list);
         }
 
         const ConstIterator& operator++(){
+            ////    check if the current index is above the list size, then the current iterator points to end()
+            ////    so we can't use operator++ in this case and we are out of range
             if(this->index > this->list->size){
                 throw std::out_of_range("Out of range");
             }
+            ////    only update the index
             ++this->index;
             return *this;
         }
