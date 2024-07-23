@@ -91,7 +91,16 @@ namespace mtm {
         ConstIterator& operator=(const ConstIterator& iterator) = default;
 
         const T& operator*()const{
-            return list->head->value;
+            if(this->index > this->list->size){
+                throw std::out_of_range("Out of range");
+            }
+            SortedList<T>::Node* runner = this->list->head;
+            int i = 1;
+            while(i < this->index){
+                runner = runner->next;
+                ++i;
+            }
+            return runner->value;
         }
 
         bool operator!=(const SortedList<T>::ConstIterator& iterator)const{
