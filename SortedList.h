@@ -107,11 +107,15 @@ namespace mtm {
 
         ////    begin method
         ConstIterator begin(){
+            ////    create a new constIterator with current_index = 1,
+            ////    and assign this to be the list that the constIterator points to
             return ConstIterator(1, this);
         }
 
         ////    end method
         ConstIterator end(){
+            ////    create a new constIterator with current_index = this(sorted_list)->size + 1,
+            ////    and assign this to be the list that the constIterator points to
             return ConstIterator(this->size + 1, this);
         }
 
@@ -121,6 +125,7 @@ namespace mtm {
         void remove(ConstIterator& to_delete);
 
         int length(){
+            ////    return the size of the sorted_list from the size field
             return this->size;
         }
 
