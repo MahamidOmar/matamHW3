@@ -280,6 +280,7 @@ namespace mtm {
             return this->size;
         }
 
+        template <typename Predicate>
         SortedList filter(bool (*predicate)(const T&))const;
 
         SortedList apply(T (*operation) (const T&))const;
