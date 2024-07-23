@@ -66,14 +66,14 @@ namespace mtm {
                     ////    as we did before delete the current list with this loop
                     ////    assign a new pointer to_delete which points to the current node we are going to delete
                     Node<T>* to_delete = this->head;
-                    ////    iterate over the current sorted_list with runner
-                    Node<T>* runner = this->head;
-                    while(runner)
+                    ////    iterate over the current sorted_list with runner2
+                    Node<T>* runner2 = this->head;
+                    while(runner2)
                     {
                         ////    place the to_delete to point to the current node
-                        to_delete = runner;
+                        to_delete = runner2;
                         ////    move the runner to the next node
-                        runner = runner->next;
+                        runner2 = runner2->next;
                         ////    delete the current node
                         delete to_delete;
                     }
