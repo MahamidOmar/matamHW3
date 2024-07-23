@@ -24,13 +24,59 @@ namespace mtm {
 //        };
 
         Node<T>* head;
+        ////    Added the tail so it makes it easier to iterate and add items to the sorted_list
+        Node<T>* tail;
         int size;
     public:
         ////    constructor
-        SortedList(): head(nullptr), size(0){}
+        SortedList(): head(nullptr), tail(nullptr), size(0){}
 
         ////    copy constructor
-        SortedList(const SortedList& to_copy);
+        SortedList(const SortedList& to_copy): head(nullptr), tail(nullptr), size(to_copy.size){
+            ////    check if the size is zero, nothing to copy
+            if(to_copy.size == 0){
+                return;
+            }
+            const Node<T>* runner = to_copy.head;
+            ////    try to copy the first node so we can continue with the rest
+            try {
+                this->head = new Node<T>(runner->value);
+            }catch (const std::bad_alloc& e){
+                ////    if the allocation failed
+                throw e;
+            }
+            ////    move the runner to the second node(if exists) so we can continue the copying
+            runner = runner->next;
+            ////    place the tail to the current node
+            ////    At this stage only one is created, so the tail is the same as the head
+            this->tail = this->head;
+            while (runner)
+            {
+                try {
+                    ////    create a new node and assign it to the next of the current tail
+                    this->tail->next = new Node<T>(runner->value);
+                    ////    move the tail to the newly allocated node
+                    this->tail = this->tail->next;
+                    ////    move the runner to the next node to_copy
+                    runner = runner->next;
+                }catch (const std::bad_alloc& e)
+                {
+                    ////    reaches this code if one of the allocations failed
+                    ////    so we need to delete everything we already copied so far
+                    ////    as we did before delete the current list with this loop
+                    Node<T>* to_delete = this->head;
+                    Node<T>* tmp = this->head;
+                    while(tmp)
+                    {
+                        to_delete = tmp;
+                        tmp = tmp->next;
+                        delete to_delete;
+                    }
+                    size = 0;
+                    throw e;
+                }
+            }
+        }
 
         ////    operator=
         SortedList& operator=(const SortedList& to_copy);
