@@ -291,7 +291,14 @@ namespace mtm {
             return result;
         }
 
-        SortedList apply(T (*operation) (const T&))const;
+        template<typename Operation>
+        SortedList apply(const Operation& operation)const{
+            SortedList<T> result;
+            for(ConstIterator it = begin() ; it != end() ; ++it){
+                result.insert(operation(*it));
+            }
+            return result;
+        }
 
         /**
          *
