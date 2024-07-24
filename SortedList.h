@@ -17,12 +17,6 @@ namespace mtm {
     template <typename T>
     class SortedList {
     private:
-//        struct Node{
-//            T value;
-//            Node* next;
-//            Node(const T& value): value(value), next(nullptr){}
-//        };
-
         Node<T>* head;
         ////    Added the tail so it makes it easier to iterate and add items to the sorted_list
         Node<T>* tail;
@@ -218,19 +212,6 @@ namespace mtm {
                 ////    if the current sorted_list has at least one element
                 ////    assign current_node to point to the current node
                 Node<T>* current_node = this->head;
-//                if(this->size == 1){
-//                    if(to_add > this->head->value){
-//                        new_node->next = this->head;
-//                        this->head = new_node;
-//                        ++this->size;
-//                        return;
-//                    }else{
-//                        this->head->next = new_node;
-//                        this->tail = new_node;
-//                        ++this->size;
-//                        return;
-//                    }
-//                }
                 if(to_add > this->head->value){
                     new_node->next = this->head;
                     this->head = new_node;
@@ -320,31 +301,6 @@ namespace mtm {
             }
             return result;
         }
-
-        /**
-         *
-         * the class should support the following public interface:
-         * if needed, use =defualt / =delete
-         *
-         * constructors and destructor:
-         * 1. SortedList() - creates an empty list.
-         * 2. copy constructor
-         * 3. operator= - assignment operator
-         * 4. ~SortedList() - destructor
-         *
-         * iterator:
-         * 5. class ConstIterator;
-         * 6. begin method
-         * 7. end method
-         *
-         * functions:
-         * 8. insert - inserts a new element to the list
-         * 9. remove - removes an element from the list
-         * 10. length - returns the number of elements in the list
-         * 11. filter - returns a new list with elements that satisfy a given condition
-         * 12. apply - returns a new list with elements that were modified by an operation
-         */
-
     };
 
     template <class T>
@@ -415,33 +371,6 @@ namespace mtm {
             ////    here i = index, and runner points to the requested node
             return runner;
         }
-        ////    not needed
-//        const ConstIterator operator++(int i){
-//            if(this->index > this->list->size)
-//            {
-//                throw std::out_of_range("Out of range");
-//            }
-//            const ConstIterator result = *this;
-//            ++(*this);
-//            return result;
-//        }
-
-    /**
-     * the class should support the following public interface:
-     * if needed, use =defualt / =delete
-     *
-     * constructors and destructor:
-     * 1. a ctor(or ctors) your implementation needs
-     * 2. copy constructor
-     * 3. operator= - assignment operator
-     * 4. ~ConstIterator() - destructor
-     *
-     * operators:
-     * 5. operator* - returns the element the iterator points to
-     * 6. operator++ - advances the iterator to the next element
-     * 7. operator!= - returns true if the iterator points to a different element
-     *
-     */
     };
 }
 
