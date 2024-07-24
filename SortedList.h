@@ -239,7 +239,7 @@ namespace mtm {
                 }
                 ////    at the end of this loop, current_node will point to the last node that has a value > to_add
                 ////    this means that new_node will be current_node->next
-                while(current_node->next && current_node->next->value > to_add){
+                while(current_node->next && (current_node->next->value > to_add)){
                     current_node = current_node->next;
                 }
                 ////    now just need to insert new_node right after current_node
