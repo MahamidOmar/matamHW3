@@ -228,6 +228,8 @@ namespace mtm {
                 new_node->next = current_node->next;
                 ////    and finally assign the current_node->next to be new_node
                 current_node->next = new_node;
+                ////    increase the sorted_list size
+                ++this->size;
             }
         }
 
