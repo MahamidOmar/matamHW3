@@ -185,14 +185,14 @@ namespace mtm {
         class ConstIterator;
 
         ////    begin method
-        ConstIterator begin(){
+        ConstIterator begin()const{
             ////    create a new constIterator with current_index = 1,
             ////    and assign this to be the list that the constIterator points to
             return ConstIterator(1, this);
         }
 
         ////    end method
-        ConstIterator end(){
+        ConstIterator end()const{
             ////    create a new constIterator with current_index = this(sorted_list)->size + 1,
             ////    and assign this to be the list that the constIterator points to
             return ConstIterator(this->size + 1, this);
