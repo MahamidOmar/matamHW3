@@ -281,7 +281,15 @@ namespace mtm {
         }
 
         template <typename Predicate>
-        SortedList filter(bool (*predicate)(const T&))const;
+        SortedList filter(const Predicate& predicate)const{
+            SortedList<T> result;
+            for(ConstIterator it = begin() ; it != end() ; ++it){
+                if(predicate(*it)){
+                    result.insert(*it);
+                }
+            }
+            return result;
+        }
 
         SortedList apply(T (*operation) (const T&))const;
 
