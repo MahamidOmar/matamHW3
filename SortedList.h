@@ -240,7 +240,7 @@ namespace mtm {
                 return;
             }
             ////    check if to_delete points to the head of the sorted_list
-            if(to_delete == this->begin()){
+            if(!(to_delete != this->begin())){
                 ////    if only one node, then the tail should point to nullptr
                 if(this->size == 1){
                     this->tail = nullptr;
@@ -258,7 +258,7 @@ namespace mtm {
             ////    assign a pointer to the current node
             Node<T>* current_node = this->head;
             ////    at the end of the loop current node will be the previous of the node we want to delete
-            while(current_node->next && current_node->next != to_delete.current){
+            while(current_node->next && (current_node->next != to_delete.current())){
                 current_node = current_node->next;
             }
             ////    reaches here if the loop didn't find a matching node for to_delete iterator
