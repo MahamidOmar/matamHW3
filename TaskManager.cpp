@@ -116,6 +116,7 @@ void TaskManager::bumpPriorityByType(TaskType type, int priority) {
         for(SortedList<Task>::ConstIterator it = changed.begin() ; it != changed.end() ; ++it){
             worker_tasks.insert(*it);
         }
+        ////    update the worker's task
         person.setTasks(worker_tasks);
     }
 
