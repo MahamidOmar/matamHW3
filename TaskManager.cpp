@@ -74,7 +74,9 @@ void TaskManager::bumpPriorityByType(TaskType type, int priority) {
 }
 
 void TaskManager::printAllEmployees() const {
-
+    for(int i = 0 ; i < current_workers ; ++i){
+        std::cout << workers[i] << std::endl;
+    }
 }
 
 void TaskManager::printTasksByType(TaskType type) const {
