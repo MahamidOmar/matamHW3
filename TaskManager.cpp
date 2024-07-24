@@ -1,6 +1,8 @@
 
 #include "TaskManager.h"
 
+TaskType TaskManager::type_to_check = TaskType::General;
+int TaskManager::priority_increment = 0;
 
 void TaskManager::assignTask(const string &personName, const Task &task) {
     ////    first check if the worker already exists in the system
@@ -70,8 +72,8 @@ void TaskManager::completeTask(const string &personName) {
 }
 
 void TaskManager::bumpPriorityByType(TaskType type, int priority) {
-    type_to_check = type;
-    priority_increment = priority;
+    TaskManager::type_to_check = type;
+    TaskManager::priority_increment = priority;
     SortedList<Task*> filtered = this->all_tasks.filter(check_type);
     SortedList<Task*> changed = filtered.apply(increase_priority);
     for(SortedList<Task*>::ConstIterator it = filtered.begin() ; it != filtered.end() ; ++it){
@@ -80,6 +82,7 @@ void TaskManager::bumpPriorityByType(TaskType type, int priority) {
     for(SortedList<Task*>::ConstIterator it = changed.begin() ; it != changed.end() ; ++it){
         this->all_tasks.insert(*it);
     }
+
 }
 
 void TaskManager::printAllEmployees() const {
@@ -110,11 +113,11 @@ TaskManager::~TaskManager() {
 }
 
 bool TaskManager::check_type(Task *task) {
-    return task->getType() == type_to_check;
+    return task->getType() == TaskManager::type_to_check;
 }
 
 Task *TaskManager::increase_priority(Task *task) {
-    Task* new_task = new Task(task->getPriority() + priority_increment, task->getType(), task->getDescription());
+    Task* new_task = new Task(task->getPriority() + TaskManager::priority_increment, task->getType(), task->getDescription());
     return new_task;
 }
 
