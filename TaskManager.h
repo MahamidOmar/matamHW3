@@ -17,6 +17,7 @@ private:
     // Note - Additional private fields and methods can be added if needed.
     int next_job_id = 0;
     int current_workers = 0;
+    SortedList<Task> all_tasks;
     Person workers[MAX_PERSONS];
 
 public:
@@ -76,4 +77,6 @@ public:
      * @brief Prints all tasks assigned to all employees.
      */
     void printAllTasks() const;
+
+    ~TaskManager();
 };

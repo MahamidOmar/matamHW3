@@ -6,12 +6,20 @@ void TaskManager::assignTask(const string &personName, const Task &task) {
     ////    first check if the worker already exists in the system
     for(Person& worker : this->workers){
         if(worker.getName() == personName){
-            ////    create a new copy of the provided task
+            ////    allocate a new copy of the provided task
             ////    this is done so we can change the task_id
-            Task copied_task = task;
-            copied_task.setId(this->next_job_id);
+            Task* copied_task = nullptr;
+            try{
+                copied_task = new Task(task);
+            }catch (std::bad_alloc& e){
+                throw e;
+            }
+            ////    change the id, and increase next_job_id
+            copied_task->setId((this->next_job_id)++);
             ////    assign the task to the provided worker
-            worker.assignTask(copied_task);
+            worker.assignTask(*copied_task);
+            ////    add the task to the all_tasks sorted_list
+            this->all_tasks.insert(*copied_task);
             return;
         }
     }
@@ -25,15 +33,31 @@ void TaskManager::assignTask(const string &personName, const Task &task) {
     Person new_worker(personName);
     ////    add the new_worker to the workers array, and increase the number of current workers
     this->workers[current_workers++] = new_worker;
-    ////    create a new copy of the provided task
+    ////    allocate a new copy of the provided task
     ////    this is done so we can change the task_id
-    Task copied_task = task;
-    copied_task.setId(this->next_job_id);
-    this->workers[current_workers - 1].assignTask(copied_task);
+    Task* copied_task = nullptr;
+    try{
+        copied_task = new Task(task);
+    }catch (std::bad_alloc& e){
+        throw e;
+    }
+    ////    change the id, and increase next_job_id
+    copied_task->setId((this->next_job_id)++);
+    ////    assign the task to the added worker
+    this->workers[current_workers - 1].assignTask(*copied_task);
+    ////    add the task to the all_tasks sorted_list
+    this->all_tasks.insert(*copied_task);
 }
 
 void TaskManager::completeTask(const string &personName) {
+    ////    search for the worker with personName
+    for(Person& worker : this->workers){
+        if(worker.getName() == personName){
+            ////    when found, use the completeTask method defined in user
+            int finished_id = worker.completeTask();
 
+        }
+    }
 }
 
 void TaskManager::bumpPriorityByType(TaskType type, int priority) {
@@ -49,5 +73,9 @@ void TaskManager::printTasksByType(TaskType type) const {
 }
 
 void TaskManager::printAllTasks() const {
+
+}
+
+TaskManager::~TaskManager() {
 
 }
