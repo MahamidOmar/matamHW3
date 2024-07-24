@@ -70,7 +70,6 @@ void TaskManager::completeTask(const string &personName) {
 }
 
 void TaskManager::bumpPriorityByType(TaskType type, int priority) {
-
 }
 
 void TaskManager::printAllEmployees() const {
@@ -80,7 +79,6 @@ void TaskManager::printAllEmployees() const {
 }
 
 void TaskManager::printTasksByType(TaskType type) const {
-
 }
 
 void TaskManager::printAllTasks() const {
