@@ -74,12 +74,51 @@ void TaskManager::bumpPriorityByType(TaskType type, int priority) {
             if((*it).getId() == (*it2).getId()){
                 this->all_tasks.remove(it2);
             }
+            ////    check if the list is empty, need to exit because operator++ will not work
+            if(this->all_tasks.length() == 0){
+                break;
+            }
+        }
+        ////    check if the list is empty, need to exit because operator++ will not work
+        if(this->all_tasks.length() == 0){
+            break;
         }
     }
     ////    add the filtered tasks after applying the increase_priority on them
     for(SortedList<Task>::ConstIterator it = changed.begin() ; it != changed.end() ; ++it){
         this->all_tasks.insert(*it);
     }
+
+    ////    now filter the list of each worker in the system
+    for(int i = 0 ; i < current_workers ; ++i){
+        Person person = workers[i];
+        SortedList<Task> worker_tasks = person.getTasks();
+        filtered = worker_tasks.filter(check_type);
+        ////    apply the increase_priority on all of the filtered tasks
+        changed = filtered.apply(increase_priority);
+        ////    remove all of the old filtered tasks from the original list
+        for(SortedList<Task>::ConstIterator it = filtered.begin() ; it != filtered.end() ; ++it){
+            for(SortedList<Task>::ConstIterator it2 = worker_tasks.begin() ; it2 != worker_tasks.end() ; ++it2){
+                if((*it).getId() == (*it2).getId()){
+                    worker_tasks.remove(it2);
+                }
+                ////    check if the list is empty, need to exit because operator++ will not work
+                if(worker_tasks.length() == 0){
+                    break;
+                }
+            }
+            ////    check if the list is empty, need to exit because operator++ will not work
+            if(worker_tasks.length() == 0){
+                break;
+            }
+        }
+        ////    add the filtered tasks after applying the increase_priority on them
+        for(SortedList<Task>::ConstIterator it = changed.begin() ; it != changed.end() ; ++it){
+            worker_tasks.insert(*it);
+        }
+        person.setTasks(worker_tasks);
+    }
+
 }
 
 void TaskManager::printAllEmployees() const {
