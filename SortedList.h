@@ -218,6 +218,25 @@ namespace mtm {
                 ////    if the current sorted_list has at least one element
                 ////    assign current_node to point to the current node
                 Node<T>* current_node = this->head;
+//                if(this->size == 1){
+//                    if(to_add > this->head->value){
+//                        new_node->next = this->head;
+//                        this->head = new_node;
+//                        ++this->size;
+//                        return;
+//                    }else{
+//                        this->head->next = new_node;
+//                        this->tail = new_node;
+//                        ++this->size;
+//                        return;
+//                    }
+//                }
+                if(to_add > this->head->value){
+                    new_node->next = this->head;
+                    this->head = new_node;
+                    ++this->size;
+                    return;
+                }
                 ////    at the end of this loop, current_node will point to the last node that has a value > to_add
                 ////    this means that new_node will be current_node->next
                 while(current_node->next && current_node->next->value > to_add){

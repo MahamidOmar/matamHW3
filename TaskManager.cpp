@@ -77,7 +77,11 @@ void TaskManager::bumpPriorityByType(TaskType type, int priority) {
     SortedList<Task*> filtered = this->all_tasks.filter(check_type);
     SortedList<Task*> changed = filtered.apply(increase_priority);
     for(SortedList<Task*>::ConstIterator it = filtered.begin() ; it != filtered.end() ; ++it){
-        this->all_tasks.remove(it);
+        for(SortedList<Task*>::ConstIterator it2 = this->all_tasks.begin() ; it2 != this->all_tasks.end() ; ++it2){
+            if((*it)->getId() == (*it2)->getId()){
+                this->all_tasks.remove(it2);
+            }
+        }
     }
     for(SortedList<Task*>::ConstIterator it = changed.begin() ; it != changed.end() ; ++it){
         this->all_tasks.insert(*it);
@@ -118,6 +122,7 @@ bool TaskManager::check_type(Task *task) {
 
 Task *TaskManager::increase_priority(Task *task) {
     Task* new_task = new Task(task->getPriority() + TaskManager::priority_increment, task->getType(), task->getDescription());
+    new_task->setId(task->getId());
     return new_task;
 }
 
