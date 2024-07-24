@@ -61,10 +61,14 @@ void TaskManager::completeTask(const string &personName) {
 }
 
 void TaskManager::bumpPriorityByType(TaskType type, int priority) {
+    ////    update the static fields according to the received value
     TaskManager::type_to_check = type;
     TaskManager::priority_increment = priority;
+    ////    get all the tasks that are of correct type
     SortedList<Task> filtered = this->all_tasks.filter(check_type);
+    ////    apply the increase_priority on all of the filtered tasks
     SortedList<Task> changed = filtered.apply(increase_priority);
+    ////    remove all of the old filtered tasks from the original list
     for(SortedList<Task>::ConstIterator it = filtered.begin() ; it != filtered.end() ; ++it){
         for(SortedList<Task>::ConstIterator it2 = this->all_tasks.begin() ; it2 != this->all_tasks.end() ; ++it2){
             if((*it).getId() == (*it2).getId()){
@@ -72,10 +76,10 @@ void TaskManager::bumpPriorityByType(TaskType type, int priority) {
             }
         }
     }
+    ////    add the filtered tasks after applying the increase_priority on them
     for(SortedList<Task>::ConstIterator it = changed.begin() ; it != changed.end() ; ++it){
         this->all_tasks.insert(*it);
     }
-
 }
 
 void TaskManager::printAllEmployees() const {
@@ -103,6 +107,7 @@ bool TaskManager::check_type(Task task) {
 }
 
 Task TaskManager::increase_priority(Task task) {
+    ////    create a new task that has the new priority
     Task new_task = Task(task.getPriority() + TaskManager::priority_increment, task.getType(), task.getDescription());
     new_task.setId(task.getId());
     return new_task;
