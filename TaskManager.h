@@ -13,12 +13,18 @@ private:
      * @brief Maximum number of persons the TaskManager can handle.
      */
     static const int MAX_PERSONS = 10;
+    static TaskType type_to_check;
+    static int priority_increment;
 
     // Note - Additional private fields and methods can be added if needed.
     int next_job_id = 0;
     int current_workers = 0;
     SortedList<Task*> all_tasks;
     Person workers[MAX_PERSONS];
+
+    static bool check_type(Task* task);
+
+    static Task* increase_priority(Task* task);
 
 public:
     /**

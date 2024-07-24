@@ -70,6 +70,16 @@ void TaskManager::completeTask(const string &personName) {
 }
 
 void TaskManager::bumpPriorityByType(TaskType type, int priority) {
+    type_to_check = type;
+    priority_increment = priority;
+    SortedList<Task*> filtered = this->all_tasks.filter(check_type);
+    SortedList<Task*> changed = filtered.apply(increase_priority);
+    for(SortedList<Task*>::ConstIterator it = filtered.begin() ; it != filtered.end() ; ++it){
+        this->all_tasks.remove(it);
+    }
+    for(SortedList<Task*>::ConstIterator it = changed.begin() ; it != changed.end() ; ++it){
+        this->all_tasks.insert(*it);
+    }
 }
 
 void TaskManager::printAllEmployees() const {
@@ -79,6 +89,11 @@ void TaskManager::printAllEmployees() const {
 }
 
 void TaskManager::printTasksByType(TaskType type) const {
+    type_to_check = type;
+    SortedList<Task*> filtered = this->all_tasks.filter(check_type);
+    for(SortedList<Task*>::ConstIterator it = filtered.begin() ; it != filtered.end() ; ++it){
+        std::cout << *(*it) << std::endl;
+    }
 }
 
 void TaskManager::printAllTasks() const {
@@ -93,3 +108,13 @@ TaskManager::~TaskManager() {
         this->all_tasks.remove(it);
     }
 }
+
+bool TaskManager::check_type(Task *task) {
+    return task->getType() == type_to_check;
+}
+
+Task *TaskManager::increase_priority(Task *task) {
+    Task* new_task = new Task(task->getPriority() + priority_increment, task->getType(), task->getDescription());
+    return new_task;
+}
+
