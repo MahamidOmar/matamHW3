@@ -19,7 +19,7 @@ void TaskManager::assignTask(const string &personName, const Task &task) {
             ////    assign the task to the provided worker
             worker.assignTask(*copied_task);
             ////    add the task to the all_tasks sorted_list
-            this->all_tasks.insert(*copied_task);
+            this->all_tasks.insert(copied_task);
             return;
         }
     }
@@ -46,7 +46,7 @@ void TaskManager::assignTask(const string &personName, const Task &task) {
     ////    assign the task to the added worker
     this->workers[current_workers - 1].assignTask(*copied_task);
     ////    add the task to the all_tasks sorted_list
-    this->all_tasks.insert(*copied_task);
+    this->all_tasks.insert(copied_task);
 }
 
 void TaskManager::completeTask(const string &personName) {
@@ -56,10 +56,11 @@ void TaskManager::completeTask(const string &personName) {
             ////    when found, use the completeTask method defined in user
             int finished_id = worker.completeTask();
             ////    iterate over the all_tasks sorted_list and find the correct node for the task inside it
-            for(SortedList<Task>::ConstIterator it = this->all_tasks.begin() ; it != this->all_tasks.end() ; ++it){
+            for(SortedList<Task*>::ConstIterator it = this->all_tasks.begin() ; it != this->all_tasks.end() ; ++it){
                 ////    search for the node by getting the id of the task
-                if((*it).getId() == finished_id){
+                if((*it)->getId() == finished_id){
                     ////    use the sorted_list remove method which takes the iterator and then removes the node
+                    delete (*it);
                     this->all_tasks.remove(it);
                     return;
                 }
@@ -85,5 +86,8 @@ void TaskManager::printAllTasks() const {
 }
 
 TaskManager::~TaskManager() {
-
+    for (SortedList<Task*>::ConstIterator it = this->all_tasks.begin() ; it != this->all_tasks.end() ; ++it) {
+        delete (*it);
+        this->all_tasks.remove(it);
+    }
 }

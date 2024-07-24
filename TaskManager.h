@@ -17,7 +17,7 @@ private:
     // Note - Additional private fields and methods can be added if needed.
     int next_job_id = 0;
     int current_workers = 0;
-    SortedList<Task> all_tasks;
+    SortedList<Task*> all_tasks;
     Person workers[MAX_PERSONS];
 
 public:
