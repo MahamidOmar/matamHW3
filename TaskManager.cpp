@@ -55,7 +55,15 @@ void TaskManager::completeTask(const string &personName) {
         if(worker.getName() == personName){
             ////    when found, use the completeTask method defined in user
             int finished_id = worker.completeTask();
-
+            ////    iterate over the all_tasks sorted_list and find the correct node for the task inside it
+            for(SortedList<Task>::ConstIterator it = this->all_tasks.begin() ; it != this->all_tasks.end() ; ++it){
+                ////    search for the node by getting the id of the task
+                if((*it).getId() == finished_id){
+                    ////    use the sorted_list remove method which takes the iterator and then removes the node
+                    this->all_tasks.remove(it);
+                    return;
+                }
+            }
         }
     }
 }
