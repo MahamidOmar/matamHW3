@@ -275,7 +275,7 @@ namespace mtm {
             --this->size;
         }
 
-        int length(){
+        int length()const{
             ////    return the size of the sorted_list from the size field
             return this->size;
         }
