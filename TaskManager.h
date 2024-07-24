@@ -15,6 +15,8 @@ private:
     static const int MAX_PERSONS = 10;
 
     // Note - Additional private fields and methods can be added if needed.
+    int next_job_id = 0;
+    int current_workers = 0;
     Person workers[MAX_PERSONS];
 
 public:
