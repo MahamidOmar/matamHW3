@@ -94,8 +94,8 @@ void TaskManager::bumpPriorityByType(TaskType type, int priority) {
 
     ////    now filter the list of each worker in the system
     for(int i = 0 ; i < current_workers ; ++i){
-        Person person = workers[i];
-        SortedList<Task> worker_tasks = person.getTasks();
+        Person* person = &workers[i];
+        SortedList<Task> worker_tasks = person->getTasks();
         filtered = worker_tasks.filter(check_type);
         ////    apply the increase_priority on all of the filtered tasks
         changed = filtered.apply(increase_priority);
@@ -120,7 +120,7 @@ void TaskManager::bumpPriorityByType(TaskType type, int priority) {
             worker_tasks.insert(*it);
         }
         ////    update the worker's task
-        person.setTasks(worker_tasks);
+        person->setTasks(worker_tasks);
     }
 
 }
