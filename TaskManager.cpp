@@ -61,6 +61,9 @@ void TaskManager::completeTask(const string &personName) {
 }
 
 void TaskManager::bumpPriorityByType(TaskType type, int priority) {
+    if(priority <= 0){
+        return;
+    }
     ////    update the static fields according to the received value
     TaskManager::type_to_check = type;
     TaskManager::priority_increment = priority;
@@ -75,7 +78,7 @@ void TaskManager::bumpPriorityByType(TaskType type, int priority) {
                 this->all_tasks.remove(it2);
             }
             ////    check if the list is empty, need to exit because operator++ will not work
-            if(this->all_tasks.length() == 0){
+            if(this->all_tasks.length() == 0 || !(it2 != this->all_tasks.end())){
                 break;
             }
         }
@@ -103,7 +106,7 @@ void TaskManager::bumpPriorityByType(TaskType type, int priority) {
                     worker_tasks.remove(it2);
                 }
                 ////    check if the list is empty, need to exit because operator++ will not work
-                if(worker_tasks.length() == 0){
+                if(worker_tasks.length() == 0 || !(it2 != worker_tasks.end())){
                     break;
                 }
             }
